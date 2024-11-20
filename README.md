@@ -35,4 +35,4 @@ Aplikasi **Mobile Monitoring Ekstrakurikuler** dirancang untuk mempermudah guru 
 ### Langkah Instalasi  
 1. Clone repository ini:  
    ```bash
-   git clone https://github.com/username/mobile-monitoring-ekstrakurikuler.git
+   git clone https://github.com/naufalfirman23/mobile_version_mont_ekstrakurikuler.git
