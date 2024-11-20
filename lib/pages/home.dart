@@ -3,24 +3,24 @@ import 'package:mobile_version/pages/ekskul.dart';
 import 'package:mobile_version/pages/info.dart';
 import 'package:mobile_version/pages/prestasi.dart';
 import 'package:mobile_version/const/cApiService.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart'; // Import youtube_player_flutter
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
-
 class _HomePageState extends State<HomePage> {
   bool isLoading = true;
   Map<String, dynamic>? userData;
-  
+
   final ApiServices _userServices = ApiServices();
-  
+  late YoutubePlayerController _youtubePlayerController;
+
   Future<void> _fetchUserData() async {
     try {
       final response = await _userServices.getDataUser();
-
       setState(() {
-        userData = response; 
+        userData = response;
         isLoading = false;
       });
     } catch (e) {
@@ -37,6 +37,19 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _fetchUserData();
+    _youtubePlayerController = YoutubePlayerController(
+      initialVideoId: YoutubePlayer.convertUrlToId('https://youtu.be/eOsXnUiJHXs')!,
+      flags: YoutubePlayerFlags(
+        autoPlay: false,
+        mute: false,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _youtubePlayerController.dispose(); // Dispose the controller when not in use
   }
 
   @override
@@ -48,8 +61,7 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
               decoration: BoxDecoration(
                 color: Color.fromARGB(255, 64, 80, 223),
               ),
@@ -82,21 +94,18 @@ class _HomePageState extends State<HomePage> {
                         borderRadius: BorderRadius.circular(20.0),
                         borderSide: BorderSide.none,
                       ),
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 12.0),
+                      contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
                     ),
                   ),
-                  // Menu Section
                   Transform.translate(
-                    offset: Offset(0, 40), // Menjorok ke bawah
+                    offset: Offset(0, 40),
                     child: Container(
-                      width: double.infinity, // Lebar penuh layar
+                      width: double.infinity,
                       decoration: BoxDecoration(
                         color: const Color.fromARGB(255, 223, 233, 241),
                         borderRadius: BorderRadius.all(Radius.circular(12.0)),
                       ),
-                      padding: EdgeInsets.symmetric(
-                          vertical: 16.0, horizontal: 12.0),
+                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -120,12 +129,10 @@ class _HomePageState extends State<HomePage> {
                                 'assets/img/ekstra.png',
                                 'Ekstrakurikuler',
                                 () {
-                                  // Aksi yang dijalankan saat item "Ekstrakurikuler" di-tap
                                   Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              Ekstrakurikuler()));
+                                    context,
+                                    MaterialPageRoute(builder: (context) => Ekstrakurikuler()),
+                                  );
                                 },
                               ),
                               _buildMenuItem(
@@ -133,10 +140,9 @@ class _HomePageState extends State<HomePage> {
                                 'Prestasi',
                                 () {
                                   Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              PrestasiPage()));
+                                    context,
+                                    MaterialPageRoute(builder: (context) => PrestasiPage()),
+                                  );
                                 },
                               ),
                               _buildMenuItem(
@@ -144,10 +150,9 @@ class _HomePageState extends State<HomePage> {
                                 'Pengumuman',
                                 () {
                                   Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              InformasiPage()));
+                                    context,
+                                    MaterialPageRoute(builder: (context) => InformasiPage()),
+                                  );
                                 },
                               ),
                             ],
@@ -160,7 +165,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             SizedBox(height: 20),
-            // Profile Section
             Container(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -171,47 +175,29 @@ class _HomePageState extends State<HomePage> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 10),
+                  // Menambahkan kontrol pada video
                   Container(
-                    height: 200, // Tinggi kontainer
-                    child: PageView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 3, // Jumlah gambar
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 223, 233, 241),
-                              image: DecorationImage(
-                                image: AssetImage(
-                                  index == 0
-                                      ? 'assets/img/school_profile.png'
-                                      : index == 1
-                                          ? 'assets/img/school_profile.png'
-                                          : 'assets/img/school_profile.png', // Gambar berbeda
-                                ),
-                                fit: BoxFit.cover,
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12.0)),
-                            ),
-                          ),
-                        );
+                    height: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12)
+                    ),
+                    child: YoutubePlayer(
+                      controller: _youtubePlayerController,
+                      onReady: () {
+                        print("Video is ready!");
                       },
                     ),
                   ),
                 ],
               ),
             ),
-
+            // Bagian Berita
             Container(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Berita',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  Text('Berita', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   SizedBox(height: 10),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -232,12 +218,9 @@ class _HomePageState extends State<HomePage> {
                         _buildNewsItem('Judul', 'Isi berita sedikit'),
                         SizedBox(width: 10),
                         _buildNewsItem('Judul', 'Isi berita sedikit'),
-                        SizedBox(width: 10),
-                        _buildNewsItem('Judul', 'Isi berita sedikit'),
                       ],
                     ),
                   ),
-                  SizedBox(height: 10),
                 ],
               ),
             ),
@@ -247,7 +230,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Menu Item Builder with onTap
   Widget _buildMenuItem(String imagePath, String label, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
@@ -276,7 +258,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // News Item Builder
   Widget _buildNewsItem(String title, String description) {
     return Container(
       width: 120,
