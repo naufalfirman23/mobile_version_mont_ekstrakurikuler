@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'package:mobile_version/pages/ekskul.dart';
 import 'package:mobile_version/pages/info.dart';
 import 'package:mobile_version/pages/prestasi.dart';
+import 'package:mobile_version/const/capi.dart';
 import 'package:mobile_version/const/cApiService.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart'; // Import youtube_player_flutter
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,10 +15,30 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool isLoading = true;
   Map<String, dynamic>? userData;
+  List<dynamic> pengumumanList = [];
 
   final ApiServices _userServices = ApiServices();
   late YoutubePlayerController _youtubePlayerController;
-
+  Future<void> fetchPengumuman() async {
+    final url = ApiUri.baseUrl + ApiUri.pengumuman; // Replace with your API endpoint
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          pengumumanList = data['data'];
+          isLoading = false;
+        });
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
   Future<void> _fetchUserData() async {
     try {
       final response = await _userServices.getDataUser();
@@ -32,10 +55,17 @@ class _HomePageState extends State<HomePage> {
       ));
     }
   }
-
+  String limitWords(String text, int maxWords) {
+    List<String> words = text.split(' ');
+    if (words.length > maxWords) {
+      words = words.sublist(0, maxWords); // Ambil hanya sejumlah kata yang dibutuhkan
+    }
+    return words.join(' ') + (words.length > maxWords ? '...' : ''); // Menambahkan '...' jika kata lebih dari batas
+  }
   @override
   void initState() {
     super.initState();
+    fetchPengumuman();
     _fetchUserData();
     _youtubePlayerController = YoutubePlayerController(
       initialVideoId: YoutubePlayer.convertUrlToId('https://youtu.be/eOsXnUiJHXs')!,
@@ -199,31 +229,32 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Text('Berita', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   SizedBox(height: 10),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        _buildNewsItem('Judul', 'Isi berita sedikit'),
-                        SizedBox(width: 10),
-                        _buildNewsItem('Judul', 'Isi berita sedikit'),
-                        SizedBox(width: 10),
-                        _buildNewsItem('Judul', 'Isi berita sedikit'),
-                        SizedBox(width: 10),
-                        _buildNewsItem('Judul', 'Isi berita sedikit'),
-                        SizedBox(width: 10),
-                        _buildNewsItem('Judul', 'Isi berita sedikit'),
-                        SizedBox(width: 10),
-                        _buildNewsItem('Judul', 'Isi berita sedikit'),
-                        SizedBox(width: 10),
-                        _buildNewsItem('Judul', 'Isi berita sedikit'),
-                        SizedBox(width: 10),
-                        _buildNewsItem('Judul', 'Isi berita sedikit'),
-                      ],
-                    ),
-                  ),
+                  // Menggunakan ListView untuk menampilkan berita secara dinamis
+                  isLoading
+                      ? Center(child: CircularProgressIndicator())  // Menampilkan loading jika data belum ada
+                      : SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: List.generate(
+                              pengumumanList.length, // Menampilkan sebanyak jumlah item pengumuman
+                              (index) {
+                                final pengumuman = pengumumanList[index];  // Ambil data pengumuman berdasarkan index
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 10.0),  // Memberikan jarak antar item
+                                  child: _buildNewsItem(
+                                    limitWords(pengumuman['judul'] ?? 'Judul Tidak Tersedia', 2),  // Batasi judul menjadi 2 kata
+                                    limitWords(pengumuman['deskripsi'] ?? 'Isi Berita Tidak Tersedia', 2),  // Batasi isi menjadi 3 kata
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
                 ],
               ),
-            ),
+            )
+
+
           ],
         ),
       ),

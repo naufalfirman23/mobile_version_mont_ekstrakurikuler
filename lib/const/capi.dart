@@ -1,6 +1,6 @@
 class ApiUri {
   static const String baseUrl =
-      "https://ee23-103-172-35-21.ngrok-free.app/api/";
+      "https://sitoh.my.id/api/";
 
   static const String login = "login";
   static const String logout = "logout";

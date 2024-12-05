@@ -250,7 +250,7 @@ class DetailPrestasiPage extends StatelessWidget {
                           child: InteractiveViewer(
                             child: Image.network(
                               ApiUri.baseUrl.replaceFirst('/api', '') +
-                                  'storage/' +
+                                  '/public/storage/' +
                                   prestasi.fileSertifikat,
                               errorBuilder: (context, error, stackTrace) {
                                 return Center(
@@ -281,7 +281,7 @@ class DetailPrestasiPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                         child: Image.network(
                           ApiUri.baseUrl.replaceFirst('/api', '') +
-                              'storage/' +
+                              '/public/storage/' +
                               prestasi.fileSertifikat,
                           height: 250,
                           fit: BoxFit.cover,
