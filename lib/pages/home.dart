@@ -222,37 +222,37 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             // Bagian Berita
-            Container(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Berita', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10),
-                  // Menggunakan ListView untuk menampilkan berita secara dinamis
-                  isLoading
-                      ? Center(child: CircularProgressIndicator())  // Menampilkan loading jika data belum ada
-                      : SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: List.generate(
-                              pengumumanList.length, // Menampilkan sebanyak jumlah item pengumuman
-                              (index) {
-                                final pengumuman = pengumumanList[index];  // Ambil data pengumuman berdasarkan index
-                                return Padding(
-                                  padding: const EdgeInsets.only(right: 10.0),  // Memberikan jarak antar item
-                                  child: _buildNewsItem(
-                                    limitWords(pengumuman['judul'] ?? 'Judul Tidak Tersedia', 2),  // Batasi judul menjadi 2 kata
-                                    limitWords(pengumuman['deskripsi'] ?? 'Isi Berita Tidak Tersedia', 2),  // Batasi isi menjadi 3 kata
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                ],
-              ),
-            )
+            // Container(
+            //   padding: const EdgeInsets.all(16.0),
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       Text('Berita', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            //       SizedBox(height: 10),
+            //       // Menggunakan ListView untuk menampilkan berita secara dinamis
+            //       isLoading
+            //           ? Center(child: CircularProgressIndicator())  // Menampilkan loading jika data belum ada
+            //           : SingleChildScrollView(
+            //               scrollDirection: Axis.horizontal,
+            //               child: Row(
+            //                 children: List.generate(
+            //                   pengumumanList.length, // Menampilkan sebanyak jumlah item pengumuman
+            //                   (index) {
+            //                     final pengumuman = pengumumanList[index];  // Ambil data pengumuman berdasarkan index
+            //                     return Padding(
+            //                       padding: const EdgeInsets.only(right: 10.0),  // Memberikan jarak antar item
+            //                       child: _buildNewsItem(
+            //                         limitWords(pengumuman['judul'] ?? 'Judul Tidak Tersedia', 2),  // Batasi judul menjadi 2 kata
+            //                         limitWords(pengumuman['deskripsi'] ?? 'Isi Berita Tidak Tersedia', 2),  // Batasi isi menjadi 3 kata
+            //                       ),
+            //                     );
+            //                   },
+            //                 ),
+            //               ),
+            //             ),
+            //     ],
+            //   ),
+            // )
 
 
           ],

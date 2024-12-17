@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_version/pages/jadwalEkstra.dart';
-import 'package:mobile_version/pages/kehadiran.dart';
+// import 'package:mobile_version/pages/kehadiran.dart';
 import 'package:mobile_version/pages/registEkskul.dart';
-import 'package:mobile_version/pages/rekapNilai.dart';
+// import 'package:mobile_version/pages/rekapNilai.dart';
 
 class Ekstrakurikuler extends StatelessWidget {
   @override
@@ -39,37 +39,37 @@ class Ekstrakurikuler extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => PendaftaranEkstrakurikuler()));
                   },
                 ),
-                Divider(),
-                ListTile(
-                  leading: Icon(Icons.check_circle, color: Colors.orange),
-                  title: Text('Kehadiran Siswa'),
-                  trailing: Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                      Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => KehadiranPage()));
+                // Divider(),
+                // ListTile(
+                //   leading: Icon(Icons.check_circle, color: Colors.orange),
+                //   title: Text('Kehadiran Siswa'),
+                //   trailing: Icon(Icons.arrow_forward_ios),
+                //   onTap: () {
+                //       Navigator.push(context,
+                //         MaterialPageRoute(builder: (context) => KehadiranPage()));
 
-                  },
-                ),
-                Divider(),
-                ListTile(
-                  leading: Icon(Icons.assessment, color: Colors.purple),
-                  title: Text('Rekap Nilai'),
-                  trailing: Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                      Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => RekapNilaiPage()));
-                    // Navigasi ke halaman Rekap Nilai
-                  },
-                ),
-                Divider(),
-                ListTile(
-                  leading: Icon(Icons.card_membership, color: Colors.blue),
-                  title: Text('Kartu Ekstrakurikuler'),
-                  trailing: Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    // Navigasi ke halaman Kartu Ekstrakurikuler
-                  },
-                ),
+                //   },
+                // ),
+                // Divider(),
+                // ListTile(
+                //   leading: Icon(Icons.assessment, color: Colors.purple),
+                //   title: Text('Rekap Nilai'),
+                //   trailing: Icon(Icons.arrow_forward_ios),
+                //   onTap: () {
+                //       Navigator.push(context,
+                //         MaterialPageRoute(builder: (context) => RekapNilaiPage()));
+                //     // Navigasi ke halaman Rekap Nilai
+                //   },
+                // ),
+                // Divider(),
+                // ListTile(
+                //   leading: Icon(Icons.card_membership, color: Colors.blue),
+                //   title: Text('Kartu Ekstrakurikuler'),
+                //   trailing: Icon(Icons.arrow_forward_ios),
+                //   onTap: () {
+                //     // Navigasi ke halaman Kartu Ekstrakurikuler
+                //   },
+                // ),
                 Divider(),
                 ListTile(
                   leading: Icon(Icons.schedule, color: Colors.green),
